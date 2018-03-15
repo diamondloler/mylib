@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .xi {
+            margin-top: 400px;
+        }
+
+        .header {
+            background: #666;
+            transition: all .3s ease-in-out;
+            /* position: sticky;
+             top: 0; */
+        }
+
+        .flex-row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            height: 60px;
+            width: 100%;
+        }
+
+        .flex-space {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 60%;
+        }
+
+        .item {
+            height: 60px;
+            flex-basis: 15%;
+            line-height: 60px;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            position: relative;
+            transition: all .3s ease-in-out;
+        }
+
+        .main {
+            background: #192;
+            height: 200vh;
+            font-size: 64px;
+        }
+
+        .fade-before {
+            position: fixed;
+            top: 0;
+            opacity: 0;
+            height: 0;
+        }
+
+        .fade-after {
+            opacity: 1;
+            height: 60px;
+        }
+
+        .drop-list {
+            overflow: hidden;
+            position: absolute;
+            width: 120px;
+            border: #000 1px solid;
+            left: -44px;
+            visibility: hidden;
+            transition: all .3s ease-in-out;
+            height: 0;
+        }
+
+        .drop-list :last-child {
+            border-bottom: none;
+        }
+
+        .drop-list li {
+            background: #ccc;
+            border-bottom: #000 1px solid;
+        }
+        .item:hover {
+            color: red;
+        }
+        .item:hover .drop-list {
+            visibility: visible;
+            color: yellow;
+            height:305px;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="xi"></div>
+    <div class="header flex-row">
+        <ul class="flex-space">
+            <li class="item">首页
+                <ul class="drop-list">
+                    <li>A</li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                    <li>E</li>
+                </ul>
+            </li>
+            <li class="item">大厦
+                <ul class="drop-list">
+                    <li>A</li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                    <li>E</li>
+                </ul>
+            </li>
+            <li class="item">萨达
+                <ul class="drop-list">
+                    <li>A</li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                    <li>E</li>
+                </ul>
+            </li>
+            <li class="item">发送
+                <ul class="drop-list">
+                    <li>A</li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                    <li>E</li>
+                </ul>
+            </li>
+            <li class="item">阿萨
+                <ul class="drop-list">
+                    <li>A</li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                    <li>E</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        陈独秀同志请坐下
+    </div>
+    <script>
+        var header = document.querySelector('.header'),
+            initOffsetTop = header.offsetTop; //获取的元素距离dom顶部的距离
+
+        var header_ = header.cloneNode(true); //克隆头部
+
+        header_.className += ' fade-before';
+
+        var handleScroll = function (e) {
+            var headerRect = header.getBoundingClientRect();
+            var scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop); //兼容DTD模式
+            var header_IsExist = document.getElementsByClassName('fade-before')[0]; //检查dom节点是否存在克隆节点（header_）
+
+            //当鼠标滚动到导航栏底部时
+            if (headerRect.bottom <= 0 && !header_IsExist) {
+                header.parentNode.appendChild(header_);
+                setTimeout(function () {
+                    header_.classList.add('fade-after');
+                }, 300)
+            }
+            //当原始导航栏出现在视口时
+            if (initOffsetTop >= scrollTop && header_IsExist) {
+                header_.classList.remove('fade-after')
+                header_.parentNode.removeChild(header_)
+            }
+        }
+        window.addEventListener('scroll', handleScroll);
+    </script>
+</body>
+
+</html>

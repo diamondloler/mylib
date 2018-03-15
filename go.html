@@ -149,7 +149,7 @@
 </head>
 
 <body>
-    <input type="text" name="edm" value="">
+    <input type="text" name="edm" value="" onkeyup="this.value =this.value.replace(/\s/g,'').replace(/[^\d]/g,'').replace(/(\d{4})(?=\d)/g,'$1-');">
     <select name="xixi" id="">
         <option value="1" selected>1</option>
         <option value="2">2</option>

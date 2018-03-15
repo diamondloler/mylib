@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .flex-row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .item {
+            height: 400px;
+            flex-basis: 20%;
+            background: red;
+        }
+
+        .draggable {
+            height: 50px;
+            background: #fff;
+            width: 100px;
+            line-height: 50px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex-row">
+        <div class="item">
+            <div class="draggable" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">  
+                可拖动元素
+            </div>
+        </div> 
+        <div class="item">
+                
+        </div>     
+        <div class="item">
+                
+        </div>     
+        <div class="item">
+                
+        </div>     
+    </div>
+    <script>
+        var dragScope = document.querySelector('.flex-row'), //拖拽的范围
+            dragELem = null //拖拽的元素
+
+        var handleDragStart = function (e) {
+            if (e.target.className.indexOf('draggable') == -1) {
+                return
+            }
+            dragELem = e.target
+            dragELem.style.opacity = '.8'
+            console.log('drag begin')
+        }
+
+        var handleDrag = function (e) {
+            if (e.target.className.indexOf('draggable') == -1) {
+                return
+            }
+            console.log('drag')
+        }
+
+        var handleDragEnd = function(e) {
+            if (e.target.className.indexOf('draggable') == -1) {
+                return
+            }
+            console.log('drag stop')
+            dragELem.style.opacity = ''
+        }
+
+        var handleDragOver = function (e) {
+            console.log('drag over')
+            event.preventDefault()
+        }
+        
+        var handlerDragEnter = function (e) {
+            console.log('drag enter')
+            if(e.target.className.indexOf('item') > -1) {
+                e.target.style.backgroundColor = 'black'
+            }
+        }
+
+        var handlerDragLeave = function (e) {
+            if(e.target.className.indexOf('item') > -1) {
+                e.target.style.backgroundColor = ''
+            }
+        }
+
+        var handlerDrop = function (e) {
+            console.log('drop~')
+            dragELem.parentNode.removeChild(dragELem)
+            e.target.appendChild(dragELem)
+            e.preventDefault()
+        }
+
+        dragScope.addEventListener('dragstart', handleDragStart)
+        dragScope.addEventListener('drag', handleDrag)
+        dragScope.addEventListener('dragend', handleDragEnd)
+        dragScope.addEventListener('dragover', handleDragOver)
+        dragScope.addEventListener('dragenter', handlerDragEnter)
+        dragScope.addEventListener('dragleave', handlerDragLeave)
+        dragScope.addEventListener('drop', handlerDrop)
+        
+        console.log(666)
+    </script>
+</body>
+</html>
