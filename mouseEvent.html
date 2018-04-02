@@ -43,6 +43,7 @@
             flex-wrap: wrap;
             justify-content: space-between;
             width: 60%;
+            position: relative;
         }
 
         .item {
@@ -93,15 +94,16 @@
             background: #ccc;
             border-bottom: #000 1px solid;
         }
+
         .item:hover {
             color: red;
         }
-        .item:hover .drop-list {
+
+        /* .item:hover .drop-list {
             visibility: visible;
             color: yellow;
             height:305px;
-        }
-        
+        } */
     </style>
 </head>
 
@@ -109,7 +111,7 @@
     <div class="xi"></div>
     <div class="header flex-row">
         <ul class="flex-space">
-            <li class="item">首页
+            <li class="item" style="flex-basis:20%;">首页
                 <ul class="drop-list">
                     <li>A</li>
                     <li>B</li>
@@ -118,7 +120,7 @@
                     <li>E</li>
                 </ul>
             </li>
-            <li class="item">大厦
+            <li class="item" style="flex-basis:10%;">大厦
                 <ul class="drop-list">
                     <li>A</li>
                     <li>B</li>
@@ -186,6 +188,140 @@
             }
         }
         window.addEventListener('scroll', handleScroll);
+
+
+
+
+        var tabTrace = function (selector, option_) {
+            if (selector.charCodeAt(0) !== 0x2E) {
+                throw new Error('The 1st parameter must be class name')
+            }
+            var itemList = document.querySelectorAll(selector)
+            var line = document.createElement('div')
+            var firstItem = itemList[0] 
+            var parent = firstItem.parentNode
+            var option = {
+                height: '3px',
+                bgColor: 'red',
+                transitionTimeFun: 'ease-in-out',
+                transitionDuration: '.3s',
+                eventType: 'click',
+                borderRadius: '30%',
+                activeIndex: 0
+            }
+
+            var extend = function(target, source) {
+                source = source || {}
+                for(var key in source){
+                    target[key] = source[key]
+                }
+                return target
+            }
+
+            //mrege option
+            option = extend(option, option_)
+            var activeIndex = option.activeIndex
+
+            var setStyle = function (target, styles) {
+                for (var style in styles) {
+                    target.style[style] = styles[style]
+                }
+                return target;
+            }
+
+            var getWidthRelativePercentage = function (item) {
+                var parentWidth = window.getComputedStyle(parent).width
+                var itemWidth = window.getComputedStyle(item).width
+                var percentage = (parseFloat(itemWidth) / parseFloat(parentWidth)) * 100 + '%'
+                return percentage
+            }
+
+            var getLeftRelativePercentage = function(RelativeDistance, first) {
+                return RelativeDistance/(document.body.clientWidth - getLeft(first)) * 100 + '%'
+            }
+
+            var initTrace = function (targetLine, targetItem) {
+                parent.appendChild(targetLine)
+                setStyle(targetLine, {
+                    position: 'absolute',
+                    height: option.height,
+                    backgroundColor: option.bgColor,
+                    transition: 'all ' + option.transitionTimeFun + ' ' + option.transitionDuration,
+                    borderRadius: option.borderRadius,
+                    bottom: '0'
+                })
+                setStyle(targetItem, {
+                    color: 'purple'
+                })
+
+                move(targetItem, firstItem, targetLine)
+            }
+
+            var updateLine = function (target, Item, relativeDistance) {
+                setStyle(target, {
+                    width: getWidthRelativePercentage(Item),
+                    left: getLeftRelativePercentage(relativeDistance, firstItem)
+                })
+            }
+
+            getLeft = function (target) {
+                return target.getBoundingClientRect().left
+            }
+
+
+            var move = function (endEL, startEL, line) {
+                var end = getLeft(endEL)
+                var start = getLeft(startEL)
+                var distance = end - start
+
+                updateLine(line, endEL, distance)
+            }
+
+            initTrace(line, itemList[activeIndex])
+
+            var handleTrace = function (e) {
+                var target = e.target
+                move(target, firstItem, line)
+            }
+
+            var handleLeave = function (e) {
+                var target = e.target
+                move(itemList[activeIndex], firstItem, line)
+            }
+
+            var resetColor = function () {
+                for (var i = 0; i < itemList.length; i++) {
+                    setStyle(itemList[i], {
+                        color: ''
+                    })
+                }
+            }
+
+            var handleClick = function (e) {
+                var target = e.target
+                resetColor()
+                setStyle(target, {
+                    color: 'purple'
+                })
+                move(target, firstItem, line)
+            }
+
+            var len = itemList.length
+
+            while (len--) {
+                if (option.eventType == 'click') {
+                    itemList[len].addEventListener('click', handleClick)
+                } else if (option.eventType == 'mouseenter') {
+                    itemList[len].addEventListener('mouseenter', handleTrace)
+                    itemList[len].addEventListener('mouseleave', handleLeave)
+                }
+            }
+        }
+
+        tabTrace('.item', {
+            eventType: 'click'
+        })
+
     </script>
 </body>
 

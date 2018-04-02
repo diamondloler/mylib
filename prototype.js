@@ -103,6 +103,9 @@ function renderData(obj) {
     }
 }
 renderData(data)
-data.val1 = 666
-data.val1 = 123
-data.val1 = 654
+
+setTimeout(() => {
+    data.val1 = 666
+    data.val1 = 123
+    data.val1 = 654
+}, 1000)

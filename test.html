@@ -44,98 +44,131 @@
     </div>
 </body>
 <script>     
-    var scrollToTarget = function (selectList, animationClassList) {
-        //check the arguments
-        if (Object.prototype.toString.call(selectList) !== '[object Array]' ||
-            Object.prototype.toString.call(animationClassList) !== '[object Array]') {
-            throw new TypeError('arguments must be a Array');
-        }
+    // var scrollToTarget = function (selectList, animationClassList) {
+    //     //check the arguments
+    //     if (Object.prototype.toString.call(selectList) !== '[object Array]' ||
+    //         Object.prototype.toString.call(animationClassList) !== '[object Array]') {
+    //         throw new TypeError('arguments must be a Array');
+    //     }
 
-        if (selectList.length != animationClassList.length) {
-            throw new RangeError('The length of parameter 1 and parameter 2 must be the same');
-        }
-
-
-        //default settings
-        var body = document.body,
-            clientHeight = Math.min(body.clientHeight, document.documentElement.clientHeight),
-            el_queue = [];
+    //     if (selectList.length != animationClassList.length) {
+    //         throw new RangeError('The length of parameter 1 and parameter 2 must be the same');
+    //     }
 
 
-
-        /**
-         * @param {Array} queue: select content List
-         * @return {Array} element list
-         */
-
-
-        var getElements = function (queue) {
-            var list = [],
-                el = null;
-            list = queue.map(function (val) {
-                el = document.querySelector(val);
-                if (typeof el == 'undefined') {
-                    throw new ReferenceError('not found the element by the method of querySelector');
-                }
-                return el;
-            })
-            return list;
-        }
+    //     //default settings
+    //     var body = document.body,
+    //         clientHeight = Math.min(body.clientHeight, document.documentElement.clientHeight),
+    //         el_queue = [];
 
 
-        /**
-         * @param {Object} el: html element
-         * @return {Number}  the finally offset top 
-         */
+
+    //     /**
+    //      * @param {Array} queue: select content List
+    //      * @return {Array} element list
+    //      */
 
 
-        var getEndOffsetTop = function (el) {
-            var EndOffsetTop = 0;
-            if (el.offsetParent) {
-                do {
-                    EndOffsetTop += el.offsetTop
-                    el = el.offsetParent
-                } while (el)
-            }
-            return EndOffsetTop
-        }
+    //     var getElements = function (queue) {
+    //         var list = [],
+    //             el = null;
+    //         list = queue.map(function (val) {
+    //             el = document.querySelector(val);
+    //             if (typeof el == 'undefined') {
+    //                 throw new ReferenceError('not found the element by the method of querySelector');
+    //             }
+    //             return el;
+    //         })
+    //         return list;
+    //     }
 
 
-        //get the element list
-        el_queue = getElements(selectList);
+    //     /**
+    //      * @param {Object} el: html element
+    //      * @return {Number}  the finally offset top 
+    //      */
 
-        //handle scroll
-        var handleScroll = function () {
-            //mapping element animation
-            el_queue.forEach(function (val, index) {
-                if (body.scrollTop >= getEndOffsetTop(val) - clientHeight) {
-                    if (val.className.indexOf(animationClassList[index]) == -1) {
-                        val.className += (' ' + animationClassList[index]);
-                    }
-                } else {
-                    if (val.className.indexOf(animationClassList[index]) >= -1) {
-                        val.classList.remove(animationClassList[index])
-                    }
 
-                }
-            })
-        }
+    //     var getEndOffsetTop = function (el) {
+    //         var EndOffsetTop = 0;
+    //         if (el.offsetParent) {
+    //             do {
+    //                 EndOffsetTop += el.offsetTop
+    //                 el = el.offsetParent
+    //             } while (el)
+    //         }
+    //         return EndOffsetTop
+    //     }
 
-        // window add event listen
-        window.addEventListener('scroll', handleScroll, false);
 
-        //public API
-        return {
-            destory: function () {
-                el_queue = [],
-                    window.removeEventListener('scroll', handleScroll);
-            }
-        }
+    //     //get the element list
+    //     el_queue = getElements(selectList);
+
+    //     //handle scroll
+    //     var handleScroll = function () {
+    //         //mapping element animation
+    //         el_queue.forEach(function (val, index) {
+    //             if (body.scrollTop >= getEndOffsetTop(val) - clientHeight) {
+    //                 if (val.className.indexOf(animationClassList[index]) == -1) {
+    //                     val.className += (' ' + animationClassList[index]);
+    //                 }
+    //             } else {
+    //                 if (val.className.indexOf(animationClassList[index]) >= -1) {
+    //                     val.classList.remove(animationClassList[index])
+    //                 }
+
+    //             }
+    //         })
+    //     }
+
+    //     // window add event listen
+    //     window.addEventListener('scroll', handleScroll, false);
+
+    //     //public API
+    //     return {
+    //         destory: function () {
+    //             el_queue = [],
+    //                 window.removeEventListener('scroll', handleScroll);
+    //         }
+    //     }
+    // }
+
+    // scrollToTarget(['.item-1', '.item-2'], ['rotate', 'rotate'])
+
+    function cached(fn) {
+        var cache = Object.create(null);
+        return (function cachedFn(str) {
+            var hit = cache[str];
+            return hit || (cache[str] = fn(str))
+        })
     }
 
-    scrollToTarget(['.item-1', '.item-2'], ['rotate', 'rotate'])
+    var console__ = cached(function (str) {
+        var cache__ = Object.create(null);
 
+        return  a = 4;
+    })
+   
+    console.log(console__(9527))
+    console.log(console__(9527))
+    function abccc(a,b,c,d,e){
+        this.lsit = 111
+    }
+    abccc.prototype.sss = 9527;
+    console.log(abccc.sss)
+    console.log(cached.toString())
 
+    {
+        var a = 1
+        var b = 2
+        var caba = 3
+    }
+    var n = 60
+    while(n){
+        console.log(n)
+        n >>= 1;
+    }
 </script>
 <script src="./prototype.js"></script>
+
 </html>

@@ -67,7 +67,7 @@ Common.prototype.$copyWithin_ = function (arr, target, start, end) {
     var target_reactive = target < 0 ? 1 : -1;
 
     if (Math.abs(target_) > arr.length) {
-        throw new TypeError(target_ + 'must less than length of Array');
+        throw new rangeError( 'The 1st parameter must less than length of the 2nd parameter');
     }
 
     arr[target_] = arr[start_];
